@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="letter_button_width">48dp</dimen>
+    <dimen name="letter_button_height">48dp</dimen>
+</resources>
