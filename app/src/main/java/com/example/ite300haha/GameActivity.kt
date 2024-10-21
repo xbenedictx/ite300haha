@@ -1,5 +1,6 @@
 package com.example.ite300haha
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -57,6 +58,9 @@ class GameActivity : AppCompatActivity() {
         hintButton = findViewById(R.id.hintButton)
         settingsButton = findViewById(R.id.settingsButton)
 
+        wordToGuessTextView.setTextColor(Color.BLACK)
+        attemptsRemainingTextView.setTextColor(Color.BLACK)
+
         newGameButton.setOnClickListener { startNewGame() }
         hintButton.setOnClickListener { giveHint() }
         settingsButton.setOnClickListener {
@@ -96,6 +100,7 @@ class GameActivity : AppCompatActivity() {
         resetLetterButtons()
         resetHangmanImage()
         hintButton.isEnabled = true
+        newGameButton.isEnabled = true
     }
 
     private fun resetHangmanImage() {
@@ -150,7 +155,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun updateHangmanImage() {
-        val imageIndex = 6 - attemptsRemaining
+        val imageIndex = minOf(6 - attemptsRemaining, 5)
         hangmanImageViews[imageIndex].apply {
             setImageResource(resources.getIdentifier("hangman_$imageIndex", "drawable", packageName))
             visibility = View.VISIBLE
@@ -160,15 +165,28 @@ class GameActivity : AppCompatActivity() {
     private fun checkGameEnd() {
         when {
             displayWord.toString().replace(" ", "") == currentWord -> {
-                Toast.makeText(this, "You win!", Toast.LENGTH_LONG).show()
                 disableAllButtons()
+                showGameEndDialog("Congratulations!", "You win!")
             }
-            attemptsRemaining == 0 -> {
-                Toast.makeText(this, "Game over! The word was $currentWord", Toast.LENGTH_LONG).show()
-                if (soundEnabled) gameOverSound.start()
+            attemptsRemaining <= 0 -> {
                 disableAllButtons()
+                showGameEndDialog("Game Over", "The word was $currentWord")
             }
         }
+    }
+
+    private fun showGameEndDialog(title: String, message: String) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Play Again") { _, _ ->
+                startNewGame()
+            }
+            .setNegativeButton("Main Menu") { _, _ ->
+                finish()
+            }
+            .setCancelable(false)
+            .show()
     }
 
     private fun disableAllButtons() {
@@ -176,6 +194,7 @@ class GameActivity : AppCompatActivity() {
             letterButtonsLayout.getChildAt(i).isEnabled = false
         }
         hintButton.isEnabled = false
+        newGameButton.isEnabled = false
     }
 
     private fun giveHint() {
