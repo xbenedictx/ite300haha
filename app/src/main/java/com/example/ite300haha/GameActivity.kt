@@ -15,9 +15,9 @@ class GameActivity : AppCompatActivity() {
     private lateinit var wordToGuessTextView: TextView
     private lateinit var attemptsRemainingTextView: TextView
     private lateinit var letterButtonsLayout: GridLayout
-    private lateinit var newGameButton: Button
-    private lateinit var hintButton: Button
-    private lateinit var settingsButton: Button
+    private lateinit var newGameButton: ImageButton
+    private lateinit var hintButton: ImageButton
+    private lateinit var settingsButton: ImageButton
 
     private val words = listOf("KOTLIN", "ANDROID", "PROGRAMMING", "HANGMAN")
     private lateinit var currentWord: String

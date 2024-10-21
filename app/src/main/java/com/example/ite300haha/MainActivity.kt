@@ -3,7 +3,7 @@ package com.example.ite300haha
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+import android.widget.ImageButton
 import androidx.appcompat.app.AlertDialog
 
 class MainActivity : AppCompatActivity() {
@@ -11,8 +11,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        findViewById<Button>(R.id.startButton).setOnClickListener {
+        findViewById<ImageButton>(R.id.startButton).setOnClickListener {
             showGameDescription()
+        }
+
+        findViewById<ImageButton>(R.id.settingsButton).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
     }
 
@@ -23,6 +27,7 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("Start Game") { _, _ ->
                 startActivity(Intent(this, GameActivity::class.java))
             }
+            .setNegativeButton("Cancel", null)
             .show()
     }
 }
